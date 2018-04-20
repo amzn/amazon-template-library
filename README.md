@@ -3,6 +3,10 @@
 A collection of general purpose C++ utilities that play well with the Standard
 Library and Boost.
 
+### Dependencies
+
+This library depends on [Boost][] and on [Catch2][] for testing.
+
 ### How to use
 
 Using the AmazonTemplateLibrary from CMake is very easy. Simply make sure the
@@ -17,3 +21,8 @@ target_link_libraries(your-target PRIVATE AmazonTemplateLibrary::atl)
 ### License
 
 This library is licensed under the Apache 2.0 License.
+
+
+<!-- links -->
+[Boost]: https://www.boost.org
+[Catch2]: https://github.com/catchorg/Catch2
