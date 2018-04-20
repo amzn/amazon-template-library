@@ -520,12 +520,10 @@ public:
   }
 
   friend bool operator==(iterator const& a, iterator const& b) {
-    // Note that this is actually a too wide definition of equality, since
-    // two iterators over the same channel that happen to point to equal
-    // elements (even if those elements were in different positions in the
-    // channel) will compare equal. It's a fact of life that InputIterators
-    // do not play very well with copying and equality comparison.
-    return a.channel_ == b.channel_ && a.value_ == b.value_;
+    // Note that this is obviously a too wide definition of equality, however
+    // we can't really do better since InputIterators do not play very well
+    // with copying and equality comparison.
+    return a.channel_ == nullptr && b.channel_ == nullptr;
   }
 
   friend bool operator!=(iterator const& a, iterator const& b) {

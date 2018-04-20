@@ -81,27 +81,38 @@ TEST_CASE("Assigned iterator points to the same value as the assigned-from itera
   REQUIRE(*other == 2);
 }
 
-TEST_CASE("Copied iterators compare equal") {
-  amz::bounded_channel<int> channel{64};
-  channel.push(1);
-  channel.push(2);
-
-  auto it = std::begin(channel);
-  auto copy = it;
-  REQUIRE(it == copy);
-}
-
-TEST_CASE("Copied iterators that diverge due to iteration do not compare equal") {
+TEST_CASE("Non past-the-end iterators do not compare equal") {
   amz::bounded_channel<int> channel{64};
   channel.push(1);
   channel.push(2);
   channel.push(3);
+  channel.push(4);
+
+  auto it1 = std::begin(channel);
+  auto it2 = std::begin(channel);
+  REQUIRE(it1 != it2);
+
+  ++it1;
+  ++it2;
+  REQUIRE(it1 != it2);
+}
+
+TEST_CASE("Comparison with past-the-end iterator works as expected") {
+  amz::bounded_channel<int> channel{64};
+  channel.push(1);
+  channel.push(2);
+  channel.close();
 
   auto it = std::begin(channel);
-  auto copy = it;
-  ++copy;
+  auto end = std::end(channel);
+  REQUIRE(it != end);
+
   ++it;
-  REQUIRE(it != copy);
+  REQUIRE(it != end);
+
+  ++it;
+  REQUIRE(it == end);
+  REQUIRE(it == std::end(channel));
 }
 
 TEST_CASE("Iterator can be used to iterate over the contents of the channel when the channel is not empty") {
