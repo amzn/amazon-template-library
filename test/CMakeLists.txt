@@ -35,17 +35,15 @@ function(get_target_name target file)
   set(${target} "test.${_target}" PARENT_SCOPE)
 endfunction()
 
-find_package(Catch REQUIRED)
+find_package(Catch2 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS filesystem)
-add_library(boost_ipc INTERFACE)
-target_link_libraries(boost_ipc INTERFACE Boost::boost -lrt)
 
 # add_test_executable(<target> <file>)
 #
 # Creates a test executable for the given source file.
 function(add_test_executable target file)
   add_executable(${target} EXCLUDE_FROM_ALL "${file}")
-  target_link_libraries(${target} PRIVATE atl Catch Boost::boost Boost::filesystem boost_ipc)
+  target_link_libraries(${target} PRIVATE atl Catch2::Catch Boost::boost Boost::filesystem)
   set_target_properties(${target} PROPERTIES CXX_EXTENSIONS NO)
   target_compile_options(${target} PRIVATE -Wall)
   add_dependencies(build-tests ${target})
